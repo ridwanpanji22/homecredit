@@ -15,7 +15,7 @@
     </main>
     
     <!-- Modal Konfirmasi Keluar -->
-    <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="logoutModalLabel" aria-hidden="true">
+    {{-- <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="logoutModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -33,7 +33,33 @@
                 </div>
             </div>
         </div>
+    </div> --}}
+
+    <!-- Modal Konfirmasi Keluar -->
+    <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="logoutModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="logoutModalLabel">Konfirmasi Keluar</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    Apakah Anda yakin ingin keluar dari sistem?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Tidak</button>
+                    <!-- Form logout -->
+                    <form action="{{ route('logout') }}" method="POST" style="display:inline;">
+                        @csrf
+                        <button type="submit" class="btn btn-primary">Ya</button>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
+
     
     <footer class="bg-success text-white text-center p-3 mt-4">
         <p>&copy; 2025 Pengelolaan Riwayat Pembayaran Kredit. Semua hak dilindungi.</p>

@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('dashboard.layouts.dashboard')
 
 @section('content')
     <h2>Dashboard Nasabah</h2>
@@ -13,13 +13,17 @@
             </tr>
         </thead>
         <tbody>
+            {{-- @dd($kredits) --}}
             @foreach($kredits as $kredit)
                 <tr>
                     <td>{{ $loop->iteration }}</td>
                     <td>{{ $kredit->barang->nama_barang }}</td>
                     <td>Rp{{ number_format($kredit->total_harga, 0, ',', '.') }}</td>
                     <td>{{ ucfirst($kredit->status) }}</td>
-                    <td><a href="{{ route('nasabah.pembayaran.create', $kredit->id) }}" class="btn btn-info btn-sm">Bayar Cicilan</a></td>
+                    <td>
+                        <!-- Tombol yang mengarah ke riwayat pembayaran -->
+                        <a href="{{ url('/nasabah/riwayat-pembayaran/'.$kredit->id) }}" class="btn btn-info btn-sm">Riwayat Pembayaran</a>
+                    </td>
                 </tr>
             @endforeach
         </tbody>

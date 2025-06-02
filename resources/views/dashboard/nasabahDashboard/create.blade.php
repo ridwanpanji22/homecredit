@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('dashboard.layouts.dashboard')
 
 @section('content')
     <h2>Bayar Cicilan Kredit</h2>
