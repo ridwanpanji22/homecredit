@@ -14,22 +14,6 @@
         </div>
     @endif
 
-    @if($kredits->where('status', 'aktif')->filter->isMenunggak()->count())
-        <div class="alert alert-warning">
-            <b>Notifikasi Keterlambatan:</b>
-            <ul>
-            @foreach($kredits->where('status', 'aktif')->filter->isMenunggak() as $kr)
-                <li>
-                    {{ $kr->user->name }} menunggak pembayaran kredit ({{ $kr->barang->nama_barang }}) 
-                    sejak {{ $kr->tanggalJatuhTempoSelanjutnya()->format('d-m-Y') }}
-                    - <a href="{{ route('kredit.pembayaran.index', $kr->id) }}">Lihat Detail</a>
-                </li>
-            @endforeach
-            </ul>
-        </div>
-    @endif
-
-
     <table class="table table-bordered" id="table">
         <thead class="thead-light">
             <tr>

@@ -37,16 +37,6 @@ Route::get('/login', function () {
     return view('auth.login');
 })->name('login');
 
-// Route::get('/dashboard', function () {
-//     return view('dashboard');
-// })->middleware(['auth', 'verified'])->name('dashboard');
-
-// Route::middleware('auth')->group(function () {
-//     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-//     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-//     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-// });
-
 Route::middleware(['auth', 'role:admin'])->group(function () {
     //resource routes Admin/NasabahController named 'nasabah'
     Route::resource('admin', NasabahController::class);
@@ -56,22 +46,20 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::post('kredit/{kredit}/pembayaran/{pembayaran}/verifikasi', [PembayaranController::class, 'verifikasi'])->name('kredit.pembayaran.verifikasi');
     Route::post('kredit/{kredit}/pembayaran/{pembayaran}/tolak', [PembayaranController::class, 'tolak'])->name('kredit.pembayaran.tolak');
 
-});
-
-Route::middleware(['auth', 'role:admin,owner'])->group(function() {
+    // Laporan routes for admin
     Route::get('/laporan/kredit', [LaporanController::class, 'kredit'])->name('laporan.kredit');
     Route::get('/laporan/pembayaran', [LaporanController::class, 'pembayaran'])->name('laporan.pembayaran');
     Route::get('/laporan/nasabah', [LaporanController::class, 'nasabah'])->name('laporan.nasabah');
     Route::get('/laporan/keterlambatan', [LaporanController::class, 'keterlambatan'])->name('laporan.keterlambatan');
-
 });
 
 Route::middleware(['auth', 'role:owner'])->group(function () {
     Route::get('/owner/dashboard', [DashboardOwnerController::class, 'index'])->name('owner.dashboard');
-    Route::get('/owner/laporan/kredit', [DashboardOwnerController::class, 'laporanKredit'])->name('laporan.kredit');
-    Route::get('/owner/laporan/pembayaran', [DashboardOwnerController::class, 'laporanPembayaran'])->name('laporan.pembayaran');
-    Route::get('/owner/laporan/nasabah', [DashboardOwnerController::class, 'laporanNasabah'])->name('laporan.nasabah');
-    Route::get('/owner/laporan/keterlambatan', [DashboardOwnerController::class, 'laporanKeterlambatan'])->name('laporan.keterlambatan');
+    // Laporan routes for owner
+    Route::get('/owner/laporan/kredit', [DashboardOwnerController::class, 'laporanKredit'])->name('owner.laporan.kredit');
+    Route::get('/owner/laporan/pembayaran', [DashboardOwnerController::class, 'laporanPembayaran'])->name('owner.laporan.pembayaran');
+    Route::get('/owner/laporan/nasabah', [DashboardOwnerController::class, 'laporanNasabah'])->name('owner.laporan.nasabah');
+    Route::get('/owner/laporan/keterlambatan', [DashboardOwnerController::class, 'laporanKeterlambatan'])->name('owner.laporan.keterlambatan');
 });
 
 Route::middleware(['auth', 'role:nasabah'])->group(function() {

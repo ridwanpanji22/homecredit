@@ -43,10 +43,10 @@
                                 Laporan
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="laporanDropdown">
-                                <li><a class="dropdown-item" href="{{ route('laporan.kredit') }}">Laporan Kredit</a></li>
-                                <li><a class="dropdown-item" href="{{ route('laporan.pembayaran') }}">Laporan Pembayaran</a></li>
-                                <li><a class="dropdown-item" href="{{ route('laporan.nasabah') }}">Laporan Nasabah</a></li>
-                                <li><a class="dropdown-item" href="{{ route('laporan.keterlambatan') }}">Laporan Keterlambatan</a></li>
+                                <li><a class="dropdown-item" href="{{ route('owner.laporan.kredit') }}">Laporan Kredit</a></li>
+                                <li><a class="dropdown-item" href="{{ route('owner.laporan.pembayaran') }}">Laporan Pembayaran</a></li>
+                                <li><a class="dropdown-item" href="{{ route('owner.laporan.nasabah') }}">Laporan Nasabah</a></li>
+                                <li><a class="dropdown-item" href="{{ route('owner.laporan.keterlambatan') }}">Laporan Keterlambatan</a></li>
                             </ul>
                         </li>
                     @endif

@@ -2,6 +2,21 @@
 
 @section('content')
     <h2>Dashboard Nasabah</h2>
+
+    @if($kredits->where('status', 'aktif')->filter->isMenunggak()->count())
+        <div class="alert alert-warning mb-4">
+            <b>Notifikasi Keterlambatan:</b>
+            <ul class="mb-0">
+            @foreach($kredits->where('status', 'aktif')->filter->isMenunggak() as $kredit)
+                <li>
+                    Anda memiliki tunggakan pembayaran untuk {{ $kredit->barang->nama_barang }}
+                    sejak {{ $kredit->tanggalJatuhTempoSelanjutnya()->format('d-m-Y') }}
+                </li>
+            @endforeach
+            </ul>
+        </div>
+    @endif
+
     <table class="table table-bordered">
         <thead>
             <tr>
