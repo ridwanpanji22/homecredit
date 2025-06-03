@@ -14,7 +14,7 @@ Sistem informasi untuk mengelola kredit dan pembayaran dengan fitur multi-user (
 
 1. Clone repository ini
 ```bash
-git clone <repository-url>
+git clone https://github.com/ridwanpanji22/homecredit.git
 cd homecredit
 ```
 
