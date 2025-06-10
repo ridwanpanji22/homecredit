@@ -91,26 +91,73 @@
     <!-- Statistik Nasabah -->
     @if(request('nasabah_id'))
         <div class="row">
-            <div class="col-xl-6">
+            <div class="col-xl-12">
                 <div class="card shadow mb-4">
                     <div class="card-header py-3">
                         <h6 class="m-0 font-weight-bold text-primary">Riwayat Pembayaran</h6>
                     </div>
                     <div class="card-body">
-                        <div class="chart-area">
-                            <canvas id="paymentHistoryChart"></canvas>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-xl-6">
-                <div class="card shadow mb-4">
-                    <div class="card-header py-3">
-                        <h6 class="m-0 font-weight-bold text-primary">Status Kredit</h6>
-                    </div>
-                    <div class="card-body">
-                        <div class="chart-pie">
-                            <canvas id="creditStatusChart"></canvas>
+                        <div class="table-responsive">
+                            <table class="table table-bordered" id="paymentTable">
+                                <thead>
+                                    <tr>
+                                        <th>No</th>
+                                        <th>Tanggal</th>
+                                        <th>Jumlah Pembayaran</th>
+                                        <th>Status</th>
+                                        <th>Bukti</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @php $totalPembayaran = 0; @endphp
+                                    @forelse($kredits->first()->pembayarans as $index => $pembayaran)
+                                        @if($pembayaran->status != 'menunggu_verifikasi' || $pembayaran->bukti_transfer)
+                                            @php 
+                                                if ($pembayaran->status == 'terverifikasi') {
+                                                    $totalPembayaran += $pembayaran->jumlah_pembayaran;
+                                                }
+                                            @endphp
+                                            <tr>
+                                                <td>{{ $index + 1 }}</td>
+                                                <td>{{ \Carbon\Carbon::parse($pembayaran->tanggal_pembayaran)->format('d/m/Y') }}</td>
+                                                <td>Rp{{ number_format($pembayaran->jumlah_pembayaran, 0, ',', '.') }}</td>
+                                                <td>
+                                                    @if($pembayaran->status == 'terverifikasi')
+                                                        <span class="badge bg-success">Terverifikasi</span>
+                                                    @elseif($pembayaran->status == 'menunggu_verifikasi')
+                                                        <span class="badge bg-warning">Menunggu Verifikasi</span>
+                                                    @else
+                                                        <span class="badge bg-danger">Gagal</span>
+                                                    @endif
+                                                </td>
+                                                <td>
+                                                    @if($pembayaran->bukti_transfer)
+                                                        <a href="{{ asset('storage/' . $pembayaran->bukti_transfer) }}" 
+                                                           target="_blank" 
+                                                           class="btn btn-sm btn-info">
+                                                            Lihat Bukti
+                                                        </a>
+                                                    @else
+                                                        -
+                                                    @endif
+                                                </td>
+                                            </tr>
+                                        @endif
+                                    @empty
+                                        <tr>
+                                            <td colspan="5" class="text-center">Belum ada data pembayaran</td>
+                                        </tr>
+                                    @endforelse
+                                </tbody>
+                                @if($kredits->first()->pembayarans->count() > 0)
+                                    <tfoot>
+                                        <tr>
+                                            <th colspan="2" class="text-end">Total Dibayar:</th>
+                                            <th colspan="3">Rp{{ number_format($totalPembayaran, 0, ',', '.') }}</th>
+                                        </tr>
+                                    </tfoot>
+                                @endif
+                            </table>
                         </div>
                     </div>
                 </div>
@@ -125,7 +172,6 @@
 <style>
 .progress { height: 20px; }
 .progress-bar { background-color: #4e73df; }
-.chart-area, .chart-pie { height: 300px; position: relative; }
 </style>
 @endpush
 
@@ -139,7 +185,6 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
 <script src="https://cdn.datatables.net/buttons/2.2.2/js/buttons.html5.min.js"></script>
 <script src="https://cdn.datatables.net/buttons/2.2.2/js/buttons.print.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <script>
 $(document).ready(function() {
@@ -153,51 +198,17 @@ $(document).ready(function() {
         ]
     });
 
-    @if(request('nasabah_id'))
-        // Data untuk grafik riwayat pembayaran
-        var paymentCtx = document.getElementById('paymentHistoryChart').getContext('2d');
-        new Chart(paymentCtx, {
-            type: 'line',
-            data: {
-                labels: {!! json_encode($kredits->first()->pembayarans->pluck('tanggal_pembayaran')->map(function($date) {
-                    return \Carbon\Carbon::parse($date)->format('d/m/Y');
-                })) !!},
-                datasets: [{
-                    label: 'Jumlah Pembayaran',
-                    data: {!! json_encode($kredits->first()->pembayarans->pluck('jumlah_pembayaran')) !!},
-                    borderColor: 'rgb(75, 192, 192)',
-                    tension: 0.1
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false
-            }
-        });
-
-        // Data untuk grafik status kredit
-        var statusCtx = document.getElementById('creditStatusChart').getContext('2d');
-        var statusData = {
-            aktif: {{ $kredits->where('status', 'aktif')->count() }},
-            lunas: {{ $kredits->where('status', 'lunas')->count() }},
-            menunggak: {{ $kredits->where('status', 'menunggak')->count() }}
-        };
-
-        new Chart(statusCtx, {
-            type: 'pie',
-            data: {
-                labels: ['Aktif', 'Lunas', 'Menunggak'],
-                datasets: [{
-                    data: [statusData.aktif, statusData.lunas, statusData.menunggak],
-                    backgroundColor: ['#1cc88a', '#4e73df', '#e74a3b']
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false
-            }
-        });
-    @endif
+    // Inisialisasi DataTable untuk tabel pembayaran
+    $('#paymentTable').DataTable({
+        language: {
+            url: '//cdn.datatables.net/plug-ins/1.11.5/i18n/id.json'
+        },
+        dom: 'Bfrtip',
+        buttons: [
+            'copy', 'csv', 'excel', 'pdf', 'print'
+        ],
+        order: [[1, 'desc']] // Urutkan berdasarkan tanggal (kolom kedua) secara descending
+    });
 });
 </script>
 @endpush 
