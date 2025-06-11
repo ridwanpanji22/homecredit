@@ -86,4 +86,54 @@ class DashboardNasabahController extends Controller
 
         return redirect()->back()->with('success', 'Bukti pembayaran berhasil diunggah dan menunggu verifikasi.');
     }
+
+    public function sisaPembayaran(Request $request, $kredit_id)
+    {
+        Log::info('Accessing sisaPembayaran', [
+            'kredit_id' => $kredit_id,
+            'user_id' => auth()->id(),
+            'request_path' => $request->path()
+        ]);
+
+        $kredit = Kredit::findOrFail($kredit_id);
+        
+        // Periksa apakah kredit ini milik nasabah yang sedang login
+        if ($kredit->user_id !== auth()->id()) {
+            Log::warning('Unauthorized access attempt', [
+                'kredit_user_id' => $kredit->user_id,
+                'auth_user_id' => auth()->id()
+            ]);
+            abort(403, 'Unauthorized action.');
+        }
+
+        //melihat format data pada database
+        $pembayaran = Pembayaran::where('kredit_id', $kredit->id)->get();
+        Log::info('Semua data pembayaran:', [
+            'pembayaran' => $pembayaran->toArray()
+        ]);
+        
+        // Hitung total pembayaran yang sudah diverifikasi dan menunggu verifikasi
+        $totalPembayaran = Pembayaran::where('kredit_id', $kredit->id)
+            ->whereIn('status', ['terverifikasi'])
+            ->sum('jumlah_pembayaran');
+
+        Log::info('Total Pembayaran:', [
+            'total' => $totalPembayaran
+        ]);
+        
+        // Hitung sisa pembayaran
+        $sisaPembayaran = $kredit->total_harga - $totalPembayaran;
+
+        // Ambil riwayat pembayaran yang menunggu pembayaran
+        $riwayatPembayaran = Pembayaran::where('kredit_id', $kredit->id)
+            ->where('status', 'menunggu_verifikasi')
+            ->orderBy('tanggal_pembayaran', 'asc')
+            ->get();
+
+        Log::info('Riwayat Pembayaran yang menunggu pembayaran:', [
+            'riwayat' => $riwayatPembayaran->toArray()
+        ]);
+
+        return view('dashboard.nasabahDashboard.sisa-pembayaran', compact('kredit', 'riwayatPembayaran', 'sisaPembayaran', 'totalPembayaran'));
+    }
 }

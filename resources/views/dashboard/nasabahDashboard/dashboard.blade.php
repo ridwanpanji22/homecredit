@@ -38,6 +38,7 @@
                     <td>
                         <!-- Tombol yang mengarah ke riwayat pembayaran -->
                         <a href="{{ url('/nasabah/riwayat-pembayaran/'.$kredit->id) }}" class="btn btn-info btn-sm">Riwayat Pembayaran</a>
+                        <a href="{{ url('/nasabah/sisa-pembayaran/'.$kredit->id) }}" class="btn btn-warning btn-sm">Sisa Pembayaran</a>
                     </td>
                 </tr>
             @endforeach

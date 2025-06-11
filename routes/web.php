@@ -67,6 +67,7 @@ Route::middleware(['auth', 'role:nasabah'])->group(function() {
     Route::get('/nasabah/pembayaran/{kredit}', [PembayaranController::class, 'create'])->name('nasabah.pembayaran.create');
     Route::post('/nasabah/pembayaran/{kredit}', [PembayaranController::class, 'store'])->name('nasabah.pembayaran.store');
     Route::get('/nasabah/riwayat-pembayaran/{kredit}', [DashboardNasabahController::class, 'riwayatPembayaran'])->name('nasabah.riwayat');
+    Route::get('/nasabah/sisa-pembayaran/{kredit}', [DashboardNasabahController::class, 'sisaPembayaran'])->name('nasabah.sisa-pembayaran');
     Route::post('/nasabah/pembayaran/{kredit}/{pembayaran}/upload-bukti', [DashboardNasabahController::class, 'uploadBuktiPembayaran'])->name('nasabah.pembayaran.upload-bukti');
 });
 
