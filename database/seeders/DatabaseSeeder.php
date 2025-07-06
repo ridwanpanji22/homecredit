@@ -25,6 +25,7 @@ class DatabaseSeeder extends Seeder
             'name' => 'Admin',
             'email' => 'admin@mail.com',
             'phone' => '0811111111',
+            'no_ktp' => '1234567890123456',
             'password' => Hash::make('password'),
             'role' => 'admin',
         ]);
@@ -33,6 +34,7 @@ class DatabaseSeeder extends Seeder
             'name' => 'Nasabah',
             'email' => 'nasabah@mail.com',
             'phone' => '0821111111',
+            'no_ktp' => '2345678901234567',
             'password' => Hash::make('password'),
             'role' => 'nasabah',
         ]);
@@ -41,6 +43,7 @@ class DatabaseSeeder extends Seeder
             'name' => 'Owner',
             'email' => 'owner@mail.com',
             'phone' => '0822222222',
+            'no_ktp' => '3456789012345678',
             'password' => Hash::make('password'),
             'role' => 'owner',
         ]);

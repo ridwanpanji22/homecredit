@@ -13,6 +13,10 @@
             <input type="text" name="phone" class="form-control" required>
         </div>
         <div class="form-group">
+            <label>No. KTP</label>
+            <input type="text" name="no_ktp" class="form-control" required>
+        </div>
+        <div class="form-group">
             <label>Email</label>
             <input type="email" name="email" class="form-control" required>
         </div>

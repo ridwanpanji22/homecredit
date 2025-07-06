@@ -80,6 +80,7 @@ class NasabahController extends Controller
         $request->validate([
             'name' => 'required',
             'phone' => 'required|unique:users,phone',
+            'no_ktp' => 'required|unique:users,no_ktp',
             'email' => 'required|email|unique:users,email',
             'password' => 'required|min:6',
         ]);
@@ -87,6 +88,7 @@ class NasabahController extends Controller
         User::create([
             'name' => $request->name,
             'phone' => $request->phone,
+            'no_ktp' => $request->no_ktp,
             'email' => $request->email,
             'password' => Hash::make($request->password),
             'role' => 'nasabah'
@@ -122,12 +124,14 @@ class NasabahController extends Controller
         $request->validate([
             'name' => 'required',
             'phone' => 'required|unique:users,phone,' . $nasabah->id,
+            'no_ktp' => 'required|unique:users,no_ktp,' . $nasabah->id,
             'email' => 'required|email|unique:users,email,' . $nasabah->id,
             'password' => 'nullable|min:6',
         ]);
 
         $nasabah->name = $request->name;
         $nasabah->phone = $request->phone;
+        $nasabah->no_ktp = $request->no_ktp;
         $nasabah->email = $request->email;
         if ($request->password) {
             $nasabah->password = Hash::make($request->password);

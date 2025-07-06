@@ -21,6 +21,7 @@
                 <th>Nama Nasabah</th>
                 <th>Email</th>
                 <th>No HP</th>
+                <th>No. KTP</th>
                 <th>Status Kredit</th>
                 <th>Aksi</th>
             </tr>
@@ -32,6 +33,7 @@
                     <td>{{ $nasabah->name }}</td>
                     <td>{{ $nasabah->email }}</td>
                     <td>{{ $nasabah->phone }}</td>
+                    <td>{{ $nasabah->no_ktp ?? '-' }}</td>
                     <td></td> <!-- Status kredit, sementara kosong -->
                     <td>
                         <a href="{{ route('admin.edit', $nasabah->id) }}" class="btn btn-warning btn-sm">Edit</a>

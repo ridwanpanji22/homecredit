@@ -14,6 +14,10 @@
             <input type="text" name="phone" class="form-control" value="{{ $nasabah->phone }}" required>
         </div>
         <div class="form-group">
+            <label>No. KTP</label>
+            <input type="text" name="no_ktp" class="form-control" value="{{ $nasabah->no_ktp }}" required>
+        </div>
+        <div class="form-group">
             <label>Email</label>
             <input type="email" name="email" class="form-control" value="{{ $nasabah->email }}" required>
         </div>
