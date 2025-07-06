@@ -10,7 +10,19 @@
         </div>
         <div class="form-group">
             <label>Jenis Barang</label>
-            <input type="text" name="jenis_barang" class="form-control" required>
+            <select name="jenis_barang" class="form-control" required>
+                <option value="" disabled selected>Pilih Jenis Barang</option>
+                <option value="Elektronik">Elektronik</option>
+                <option value="Furniture">Furniture</option>
+                <option value="Kendaraan">Kendaraan</option>
+                <option value="Pakaian">Pakaian</option>
+                <option value="Perhiasan">Perhiasan</option>
+                <option value="Alat Rumah Tangga">Alat Rumah Tangga</option>
+                <option value="Gadget">Gadget</option>
+                <option value="Olahraga">Olahraga</option>
+                <option value="Kesehatan">Kesehatan</option>
+                <option value="Pendidikan">Pendidikan</option>
+            </select>
         </div>
         <div class="form-group">
             <label>Merk</label>

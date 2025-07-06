@@ -10,7 +10,19 @@
         </div>
         <div class="form-group">
             <label>Jenis Barang</label>
-            <input type="text" name="jenis_barang" class="form-control" required value="{{ $barang->jenis_barang }}">
+            <select name="jenis_barang" class="form-control" required>
+                <option value="">Pilih Jenis Barang</option>
+                <option value="Elektronik" {{ $barang->jenis_barang == 'Elektronik' ? 'selected' : '' }}>Elektronik</option>
+                <option value="Furniture" {{ $barang->jenis_barang == 'Furniture' ? 'selected' : '' }}>Furniture</option>
+                <option value="Kendaraan" {{ $barang->jenis_barang == 'Kendaraan' ? 'selected' : '' }}>Kendaraan</option>
+                <option value="Pakaian" {{ $barang->jenis_barang == 'Pakaian' ? 'selected' : '' }}>Pakaian</option>
+                <option value="Perhiasan" {{ $barang->jenis_barang == 'Perhiasan' ? 'selected' : '' }}>Perhiasan</option>
+                <option value="Alat Rumah Tangga" {{ $barang->jenis_barang == 'Alat Rumah Tangga' ? 'selected' : '' }}>Alat Rumah Tangga</option>
+                <option value="Gadget" {{ $barang->jenis_barang == 'Gadget' ? 'selected' : '' }}>Gadget</option>
+                <option value="Olahraga" {{ $barang->jenis_barang == 'Olahraga' ? 'selected' : '' }}>Olahraga</option>
+                <option value="Kesehatan" {{ $barang->jenis_barang == 'Kesehatan' ? 'selected' : '' }}>Kesehatan</option>
+                <option value="Pendidikan" {{ $barang->jenis_barang == 'Pendidikan' ? 'selected' : '' }}>Pendidikan</option>
+            </select>
         </div>
         <div class="form-group">
             <label>Merk</label>
