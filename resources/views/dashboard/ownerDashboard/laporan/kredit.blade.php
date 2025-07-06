@@ -18,6 +18,15 @@
                             <option value="menunggak" {{ request('status') == 'menunggak' ? 'selected' : '' }}>Menunggak</option>
                         </select>
                     </div>
+                    <div class="col-md-3">
+                        <label class="form-label">Jenis Barang</label>
+                        <select name="jenis_barang" class="form-select" onchange="this.form.submit()">
+                            <option value="">Semua Jenis</option>
+                            @foreach($jenisBarangList as $jenis)
+                                <option value="{{ $jenis }}" {{ request('jenis_barang') == $jenis ? 'selected' : '' }}>{{ $jenis }}</option>
+                            @endforeach
+                        </select>
+                    </div>
                 </div>
             </form>
         </div>
@@ -32,12 +41,9 @@
                         <tr>
                             <th>No</th>
                             <th>Nasabah</th>
-                            <th>Barang</th>
-                            <th>Total Harga</th>
-                            <th>Status</th>
-                            <th>Total Dibayar</th>
-                            <th>Sisa Tagihan</th>
-                            <th>Progress</th>
+                            <th>Jenis Barang</th>
+                            <th>Nama Barang</th>
+                            <th>Tanggal Dikreditkan</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -45,30 +51,9 @@
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
                                 <td>{{ $kredit->user->name }}</td>
+                                <td>{{ $kredit->barang->jenis_barang }}</td>
                                 <td>{{ $kredit->barang->nama_barang }}</td>
-                                <td>Rp{{ number_format($kredit->total_harga, 0, ',', '.') }}</td>
-                                <td>
-                                    @if($kredit->status == 'aktif')
-                                        <span class="badge bg-success">Aktif</span>
-                                    @elseif($kredit->status == 'lunas')
-                                        <span class="badge bg-primary">Lunas</span>
-                                    @else
-                                        <span class="badge bg-danger">Menunggak</span>
-                                    @endif
-                                </td>
-                                <td>Rp{{ number_format($kredit->totalDibayar(), 0, ',', '.') }}</td>
-                                <td>Rp{{ number_format($kredit->sisaTagihan(), 0, ',', '.') }}</td>
-                                <td>
-                                    @php
-                                        $progress = ($kredit->totalDibayar() / $kredit->total_harga) * 100;
-                                    @endphp
-                                    <div class="progress">
-                                        <div class="progress-bar" role="progressbar" style="width: {{ $progress }}%"
-                                             aria-valuenow="{{ $progress }}" aria-valuemin="0" aria-valuemax="100">
-                                            {{ number_format($progress, 1) }}%
-                                        </div>
-                                    </div>
-                                </td>
+                                <td>{{ $kredit->created_at->format('d/m/Y') }}</td>
                             </tr>
                         @endforeach
                     </tbody>
@@ -80,10 +65,6 @@
 
 @push('styles')
 <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap5.min.css">
-<style>
-.progress { height: 20px; }
-.progress-bar { background-color: #4e73df; }
-</style>
 @endpush
 
 @push('scripts')

@@ -12,12 +12,34 @@ class LaporanController extends Controller
 {
     public function kredit(Request $request)
     {
-        // Bisa filter status jika mau
+        // Filter status dan jenis barang
         $status = $request->get('status');
+        $jenisBarang = $request->get('jenis_barang');
+        
         $kredits = Kredit::with('user','barang')
             ->when($status, fn($q) => $q->where('status', $status))
+            ->when($jenisBarang, function($query) use ($jenisBarang) {
+                return $query->whereHas('barang', function($q) use ($jenisBarang) {
+                    $q->where('jenis_barang', $jenisBarang);
+                });
+            })
             ->get();
-        return view('dashboard.laporan.kredit', compact('kredits','status'));
+            
+        // Daftar jenis barang untuk filter
+        $jenisBarangList = [
+            'Elektronik',
+            'Furniture', 
+            'Kendaraan',
+            'Pakaian',
+            'Perhiasan',
+            'Alat Rumah Tangga',
+            'Gadget',
+            'Olahraga',
+            'Kesehatan',
+            'Pendidikan'
+        ];
+        
+        return view('dashboard.laporan.kredit', compact('kredits','status','jenisBarang','jenisBarangList'));
     }
 
     public function pembayaran(Request $request)

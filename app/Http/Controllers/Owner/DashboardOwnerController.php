@@ -59,13 +59,34 @@ class DashboardOwnerController extends Controller
     public function laporanKredit(Request $request)
     {
         $status = $request->get('status');
+        $jenisBarang = $request->get('jenis_barang');
+        
         $kredits = Kredit::with(['user', 'barang', 'pembayarans'])
             ->when($status, function($query) use ($status) {
                 return $query->where('status', $status);
             })
+            ->when($jenisBarang, function($query) use ($jenisBarang) {
+                return $query->whereHas('barang', function($q) use ($jenisBarang) {
+                    $q->where('jenis_barang', $jenisBarang);
+                });
+            })
             ->get();
 
-        return view('dashboard.ownerDashboard.laporan.kredit', compact('kredits'));
+        // Daftar jenis barang untuk filter
+        $jenisBarangList = [
+            'Elektronik',
+            'Furniture', 
+            'Kendaraan',
+            'Pakaian',
+            'Perhiasan',
+            'Alat Rumah Tangga',
+            'Gadget',
+            'Olahraga',
+            'Kesehatan',
+            'Pendidikan'
+        ];
+
+        return view('dashboard.ownerDashboard.laporan.kredit', compact('kredits','status','jenisBarang','jenisBarangList'));
     }
 
     public function laporanPembayaran(Request $request)
