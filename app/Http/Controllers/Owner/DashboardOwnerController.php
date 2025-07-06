@@ -73,6 +73,8 @@ class DashboardOwnerController extends Controller
         $status = $request->get('status');
         $startDate = $request->get('start_date');
         $endDate = $request->get('end_date');
+        $nasabahId = $request->get('nasabah_id');
+        $nasabahList = User::where('role', 'nasabah')->get();
 
         $pembayarans = Pembayaran::with(['kredit.user', 'kredit.barang'])
             ->when($status, function($query) use ($status) {
@@ -81,24 +83,15 @@ class DashboardOwnerController extends Controller
             ->when($startDate && $endDate, function($query) use ($startDate, $endDate) {
                 return $query->whereBetween('tanggal_pembayaran', [$startDate, $endDate]);
             })
+            ->when($nasabahId, function($query) use ($nasabahId) {
+                return $query->whereHas('kredit', function($q) use ($nasabahId) {
+                    $q->where('user_id', $nasabahId);
+                });
+            })
             ->orderBy('tanggal_pembayaran', 'desc')
             ->get();
 
-        return view('dashboard.ownerDashboard.laporan.pembayaran', compact('pembayarans'));
-    }
-
-    public function laporanNasabah(Request $request)
-    {
-        $nasabahId = $request->get('nasabah_id');
-        $nasabahList = User::where('role', 'nasabah')->get();
-        
-        $kredits = Kredit::with(['barang', 'pembayarans'])
-            ->when($nasabahId, function($query) use ($nasabahId) {
-                return $query->where('user_id', $nasabahId);
-            })
-            ->get();
-
-        return view('dashboard.ownerDashboard.laporan.nasabah', compact('kredits', 'nasabahList', 'nasabahId'));
+        return view('dashboard.ownerDashboard.laporan.pembayaran', compact('pembayarans', 'nasabahList', 'nasabahId'));
     }
 
     public function laporanKeterlambatan()

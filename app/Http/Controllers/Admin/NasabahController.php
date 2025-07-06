@@ -41,6 +41,29 @@ class NasabahController extends Controller
         return view('dashboard.index', compact('nasabahList', 'kredits', 'totalKredit', 'totalNasabah', 'totalPembayaran', 'totalPiutang', 'kreditMenunggak', 'totalTunggakan'));
     }
 
+    public function nasabah()
+    {
+        $nasabahList = User::where('role', 'nasabah')->get();
+        $kredits = Kredit::with(['user','barang','pembayarans'])->get();
+
+        // Data ringkasan
+        $totalKredit = Kredit::count();
+        $totalNasabah = $nasabahList->count();
+        $totalPembayaran = \App\Models\Pembayaran::where('status', 'terverifikasi')->sum('jumlah_pembayaran');
+        $totalPiutang = Kredit::sum('total_harga') - $totalPembayaran;
+        $kreditMenunggak = Kredit::with(['user', 'barang'])
+            ->where('status', 'aktif')
+            ->get()
+            ->filter(function ($kredit) {
+                return $kredit->isMenunggak();
+            });
+        $totalTunggakan = $kreditMenunggak->sum(function ($kredit) {
+            return $kredit->sisaTagihan();
+        });
+
+        return view('dashboard.nasabah', compact('nasabahList', 'kredits', 'totalKredit', 'totalNasabah', 'totalPembayaran', 'totalPiutang', 'kreditMenunggak', 'totalTunggakan'));
+    }
+
     /**
      * Show the form for creating a new resource.
      */

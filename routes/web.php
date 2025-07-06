@@ -42,6 +42,7 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::resource('admin', NasabahController::class);
     Route::resource('barang', BarangController::class);
     Route::resource('kredit', KreditController::class);
+    Route::get('/nasabah', [NasabahController::class, 'nasabah'])->name('nasabah');
     Route::resource('kredit.pembayaran', PembayaranController::class);
     Route::post('kredit/{kredit}/pembayaran/{pembayaran}/verifikasi', [PembayaranController::class, 'verifikasi'])->name('kredit.pembayaran.verifikasi');
     Route::post('kredit/{kredit}/pembayaran/{pembayaran}/tolak', [PembayaranController::class, 'tolak'])->name('kredit.pembayaran.tolak');
@@ -49,7 +50,7 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     // Laporan routes for admin
     Route::get('/laporan/kredit', [LaporanController::class, 'kredit'])->name('laporan.kredit');
     Route::get('/laporan/pembayaran', [LaporanController::class, 'pembayaran'])->name('laporan.pembayaran');
-    Route::get('/laporan/nasabah', [LaporanController::class, 'nasabah'])->name('laporan.nasabah');
+    // Route::get('/laporan/nasabah', [LaporanController::class, 'nasabah'])->name('laporan.nasabah');
     Route::get('/laporan/keterlambatan', [LaporanController::class, 'keterlambatan'])->name('laporan.keterlambatan');
 });
 
@@ -58,7 +59,7 @@ Route::middleware(['auth', 'role:owner'])->group(function () {
     // Laporan routes for owner
     Route::get('/owner/laporan/kredit', [DashboardOwnerController::class, 'laporanKredit'])->name('owner.laporan.kredit');
     Route::get('/owner/laporan/pembayaran', [DashboardOwnerController::class, 'laporanPembayaran'])->name('owner.laporan.pembayaran');
-    Route::get('/owner/laporan/nasabah', [DashboardOwnerController::class, 'laporanNasabah'])->name('owner.laporan.nasabah');
+    // Route::get('/owner/laporan/nasabah', [DashboardOwnerController::class, 'laporanNasabah'])->name('owner.laporan.nasabah');
     Route::get('/owner/laporan/keterlambatan', [DashboardOwnerController::class, 'laporanKeterlambatan'])->name('owner.laporan.keterlambatan');
 });
 

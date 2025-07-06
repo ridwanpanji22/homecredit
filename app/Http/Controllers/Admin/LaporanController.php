@@ -23,10 +23,17 @@ class LaporanController extends Controller
     public function pembayaran(Request $request)
     {
         $status = $request->get('status');
+        $nasabahId = $request->get('nasabah_id');
+        $nasabahList = User::where('role', 'nasabah')->get();
         $pembayarans = Pembayaran::with('kredit.user','kredit.barang')
             ->when($status, fn($q) => $q->where('status', $status))
+            ->when($nasabahId, function($query) use ($nasabahId) {
+                return $query->whereHas('kredit', function($q) use ($nasabahId) {
+                    $q->where('user_id', $nasabahId);
+                });
+            })
             ->get();
-        return view('dashboard.laporan.pembayaran', compact('pembayarans','status'));
+        return view('dashboard.laporan.pembayaran', compact('pembayarans','status','nasabahList','nasabahId'));
     }
 
     public function nasabah(Request $request)

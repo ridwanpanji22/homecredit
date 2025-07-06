@@ -18,7 +18,7 @@
                 <ul class="navbar-nav me-auto">
                     @if(auth()->user()->role === 'admin')
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('admin.index') }}">Kelola Nasabah</a>
+                            <a class="nav-link" href="{{ route('nasabah') }}">Kelola Nasabah</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('barang.index') }}">Kelola Barang</a>
@@ -33,7 +33,6 @@
                             <ul class="dropdown-menu" aria-labelledby="laporanDropdown">
                                 <li><a class="dropdown-item" href="{{ route('laporan.kredit') }}">Laporan Kredit</a></li>
                                 <li><a class="dropdown-item" href="{{ route('laporan.pembayaran') }}">Laporan Pembayaran</a></li>
-                                <li><a class="dropdown-item" href="{{ route('laporan.nasabah') }}">Laporan Nasabah</a></li>
                                 <li><a class="dropdown-item" href="{{ route('laporan.keterlambatan') }}">Laporan Keterlambatan</a></li>
                             </ul>
                         </li>
@@ -45,7 +44,6 @@
                             <ul class="dropdown-menu" aria-labelledby="laporanDropdown">
                                 <li><a class="dropdown-item" href="{{ route('owner.laporan.kredit') }}">Laporan Kredit</a></li>
                                 <li><a class="dropdown-item" href="{{ route('owner.laporan.pembayaran') }}">Laporan Pembayaran</a></li>
-                                <li><a class="dropdown-item" href="{{ route('owner.laporan.nasabah') }}">Laporan Nasabah</a></li>
                                 <li><a class="dropdown-item" href="{{ route('owner.laporan.keterlambatan') }}">Laporan Keterlambatan</a></li>
                             </ul>
                         </li>

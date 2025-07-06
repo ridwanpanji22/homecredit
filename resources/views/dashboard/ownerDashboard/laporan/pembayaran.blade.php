@@ -19,6 +19,15 @@
                         </select>
                     </div>
                     <div class="col-md-3">
+                        <label class="form-label">Nasabah</label>
+                        <select name="nasabah_id" class="form-select" onchange="this.form.submit()">
+                            <option value="">Semua Nasabah</option>
+                            @foreach($nasabahList as $nasabah)
+                                <option value="{{ $nasabah->id }}" {{ (request('nasabah_id') == $nasabah->id) ? 'selected' : '' }}>{{ $nasabah->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="col-md-3">
                         <label class="form-label">Tanggal Mulai</label>
                         <input type="date" name="start_date" class="form-control" value="{{ request('start_date') }}">
                     </div>
@@ -26,9 +35,9 @@
                         <label class="form-label">Tanggal Akhir</label>
                         <input type="date" name="end_date" class="form-control" value="{{ request('end_date') }}">
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-md-3 mt-2">
                         <button type="submit" class="btn btn-primary">Filter</button>
-                        <a href="{{ route('laporan.pembayaran') }}" class="btn btn-secondary">Reset</a>
+                        <a href="{{ route('owner.laporan.pembayaran') }}" class="btn btn-secondary">Reset</a>
                     </div>
                 </div>
             </form>
