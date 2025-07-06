@@ -46,10 +46,13 @@
                     <div class="row no-gutters align-items-center">
                         <div class="col mr-2">
                             <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Rata-rata Keterlambatan</div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">
-                                {{ floor($kredits->avg(function($kredit) {
+                            @php
+                                $avgLate = floor($kredits->avg(function($kredit) {
                                     return $kredit->tanggalJatuhTempoSelanjutnya()->diffInDays(now());
-                                })) }} Hari
+                                }));
+                            @endphp
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">
+                                {{ $avgLate }} Hari
                             </div>
                         </div>
                         <div class="col-auto">
@@ -88,38 +91,53 @@
                         <tr>
                             <th>No</th>
                             <th>Nasabah</th>
-                            <th>Barang</th>
-                            <th>Total Kredit</th>
-                            <th>Sisa Tagihan</th>
-                            <th>Jatuh Tempo</th>
-                            <th>Keterlambatan</th>
-                            <th>Status</th>
+                            <th>Jumlah Tenor</th>
+                            <th>Pembayaran Cicilan Terakhir</th>
+                            <th>Cicilan Terlambat</th>
+                            <th>Jumlah Tiap Cicilan</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach($kredits as $kredit)
+                            @php
+                                $totalTenor = $kredit->tenor;
+                                $cicilanPerPeriode = $kredit->cicilan_per_periode;
+                                $pembayaranTerverifikasi = $kredit->pembayarans->where('status', 'terverifikasi')->sortBy('tanggal_pembayaran');
+                                $lastPaidTenor = $pembayaranTerverifikasi->count();
+                                $terlambat = [];
+                                for ($i = 1; $i <= $totalTenor; $i++) {
+                                    $jatuhTempo = null;
+                                    $mulai = \Carbon\Carbon::parse($kredit->tanggal_mulai);
+                                    switch ($kredit->jenis_kredit) {
+                                        case 'harian':
+                                            $jatuhTempo = $mulai->copy()->addDays($i-1);
+                                            break;
+                                        case 'mingguan':
+                                            $jatuhTempo = $mulai->copy()->addWeeks($i-1);
+                                            break;
+                                        case 'bulanan':
+                                            $jatuhTempo = $mulai->copy()->addMonths($i-1);
+                                            break;
+                                    }
+                                    $sudahDibayar = $pembayaranTerverifikasi->has($i-1);
+                                    if (!$sudahDibayar && $jatuhTempo && $jatuhTempo->lt(now())) {
+                                        $terlambat[] = $i;
+                                    }
+                                }
+                            @endphp
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
                                 <td>{{ $kredit->user->name }}</td>
-                                <td>{{ $kredit->barang->nama_barang }}</td>
-                                <td>Rp{{ number_format($kredit->total_harga, 0, ',', '.') }}</td>
-                                <td>Rp{{ number_format($kredit->sisaTagihan(), 0, ',', '.') }}</td>
-                                <td>{{ $kredit->tanggalJatuhTempoSelanjutnya()->format('d/m/Y') }}</td>
+                                <td>{{ $totalTenor }}</td>
+                                <td>{{ $lastPaidTenor }}</td>
                                 <td>
-                                    @php
-                                        $keterlambatan = floor($kredit->tanggalJatuhTempoSelanjutnya()->diffInDays(now()));
-                                    @endphp
-                                    <span class="badge bg-danger">{{ $keterlambatan }} Hari</span>
-                                </td>
-                                <td>
-                                    @if($keterlambatan > 90)
-                                        <span class="badge bg-danger">Sangat Kritis</span>
-                                    @elseif($keterlambatan > 60)
-                                        <span class="badge bg-warning">Kritis</span>
+                                    @if(count($terlambat))
+                                        {{ implode(',', $terlambat) }}
                                     @else
-                                        <span class="badge bg-info">Menunggak</span>
+                                        -
                                     @endif
                                 </td>
+                                <td>Rp{{ number_format($cicilanPerPeriode, 0, ',', '.') }}</td>
                             </tr>
                         @endforeach
                     </tbody>

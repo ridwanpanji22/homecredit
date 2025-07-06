@@ -7,21 +7,21 @@
     <!-- Filter -->
     <div class="card shadow mb-4">
         <div class="card-body">
-            <form method="get" class="mb-3">
+    <form method="get" class="mb-3">
                 <div class="row align-items-end">
                     <div class="col-md-4">
                         <label class="form-label">Pilih Nasabah</label>
                         <select name="nasabah_id" class="form-select" onchange="this.form.submit()">
                             <option value="" disabled selected>Pilih Nasabah</option>
-                            @foreach($nasabahList as $nasabah)
+            @foreach($nasabahList as $nasabah)
                                 <option value="{{ $nasabah->id }}" {{ request('nasabah_id') == $nasabah->id ? 'selected' : '' }}>
                                     {{ $nasabah->name }}
-                                </option>
-                            @endforeach
-                        </select>
+                </option>
+            @endforeach
+        </select>
                     </div>
                 </div>
-            </form>
+    </form>
         </div>
     </div>
 
@@ -30,22 +30,22 @@
         <div class="card-body">
             <div class="table-responsive">
                 <table class="table table-bordered" id="dataTable">
-                    <thead>
-                        <tr>
-                            <th>No</th>
+            <thead>
+                <tr>
+                    <th>No</th>
                             <th>Nasabah</th>
-                            <th>Barang</th>
+                    <th>Barang</th>
                             <th>Total Kredit</th>
                             <th>Total Dibayar</th>
                             <th>Sisa Tagihan</th>
                             <th>Status</th>
                             <th>Progress</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach($kredits as $kredit)
-                            <tr>
-                                <td>{{ $loop->iteration }}</td>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach($kredits as $kredit)
+                    <tr>
+                        <td>{{ $loop->iteration }}</td>
                                 <td>{{ $kredit->user->name }}</td>
                                 <td>{{ $kredit->barang->nama_barang }}</td>
                                 <td>Rp{{ number_format($kredit->total_harga, 0, ',', '.') }}</td>
@@ -71,9 +71,9 @@
                                         </div>
                                     </div>
                                 </td>
-                            </tr>
-                        @endforeach
-                    </tbody>
+                    </tr>
+                @endforeach
+            </tbody>
                     <tfoot>
                         <tr>
                             <th colspan="3" class="text-end">Total:</th>
@@ -83,7 +83,7 @@
                             <th colspan="2"></th>
                         </tr>
                     </tfoot>
-                </table>
+        </table>
             </div>
         </div>
     </div>
@@ -137,7 +137,7 @@
                                                            class="btn btn-sm btn-info">
                                                             Lihat Bukti
                                                         </a>
-                                                    @else
+    @else
                                                         -
                                                     @endif
                                                 </td>
