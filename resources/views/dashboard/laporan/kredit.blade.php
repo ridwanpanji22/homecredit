@@ -7,7 +7,7 @@
     <!-- Filter -->
     <div class="card shadow mb-4">
         <div class="card-body">
-            <form method="get" class="mb-3">
+    <form method="get" class="mb-3">
                 <div class="row align-items-end">
                     <div class="col-md-3">
                         <label class="form-label">Status Kredit</label>
@@ -25,10 +25,10 @@
                             @foreach($jenisBarangList as $jenis)
                                 <option value="{{ $jenis }}" {{ request('jenis_barang') == $jenis ? 'selected' : '' }}>{{ $jenis }}</option>
                             @endforeach
-                        </select>
+        </select>
                     </div>
                 </div>
-            </form>
+    </form>
         </div>
     </div>
 
@@ -37,27 +37,27 @@
         <div class="card-body">
             <div class="table-responsive">
                 <table class="table table-bordered" id="dataTable">
-                    <thead>
-                        <tr>
-                            <th>No</th>
+        <thead>
+            <tr>
+                <th>No</th>
                             <th>Nasabah</th>
                             <th>Jenis Barang</th>
                             <th>Nama Barang</th>
                             <th>Tanggal Dikreditkan</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach($kredits as $kredit)
-                            <tr>
-                                <td>{{ $loop->iteration }}</td>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach($kredits as $kredit)
+                <tr>
+                    <td>{{ $loop->iteration }}</td>
                                 <td>{{ $kredit->user->name }}</td>
                                 <td>{{ $kredit->barang->jenis_barang }}</td>
                                 <td>{{ $kredit->barang->nama_barang }}</td>
                                 <td>{{ $kredit->created_at->format('d/m/Y') }}</td>
-                            </tr>
-                        @endforeach
-                    </tbody>
-                </table>
+                </tr>
+            @endforeach
+        </tbody>
+    </table>
             </div>
         </div>
     </div>
