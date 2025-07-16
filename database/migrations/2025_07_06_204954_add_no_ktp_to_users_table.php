@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             $table->string('no_ktp')->unique()->after('phone');
+            $table->string('foto_ktp')->nullable()->after('no_ktp');
         });
     }
 
@@ -23,6 +24,7 @@ return new class extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             $table->dropColumn('no_ktp');
+            $table->dropColumn('foto_ktp');
         });
     }
 };
