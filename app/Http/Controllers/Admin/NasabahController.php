@@ -83,7 +83,13 @@ class NasabahController extends Controller
             'no_ktp' => 'required|unique:users,no_ktp',
             'email' => 'required|email|unique:users,email',
             'password' => 'required|min:6',
+            'foto_ktp' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
         ]);
+
+        $fotoKtpPath = null;
+        if ($request->hasFile('foto_ktp')) {
+            $fotoKtpPath = $request->file('foto_ktp')->store('foto_ktp', 'public');
+        }
 
         User::create([
             'name' => $request->name,
@@ -91,7 +97,8 @@ class NasabahController extends Controller
             'no_ktp' => $request->no_ktp,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'role' => 'nasabah'
+            'role' => 'nasabah',
+            'foto_ktp' => $fotoKtpPath,
         ]);
 
         return redirect()->route('admin.index')->with('success', 'Nasabah berhasil ditambah.');
@@ -127,6 +134,7 @@ class NasabahController extends Controller
             'no_ktp' => 'required|unique:users,no_ktp,' . $nasabah->id,
             'email' => 'required|email|unique:users,email,' . $nasabah->id,
             'password' => 'nullable|min:6',
+            'foto_ktp' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
         ]);
 
         $nasabah->name = $request->name;
@@ -135,6 +143,13 @@ class NasabahController extends Controller
         $nasabah->email = $request->email;
         if ($request->password) {
             $nasabah->password = Hash::make($request->password);
+        }
+        if ($request->hasFile('foto_ktp')) {
+            // Hapus file lama jika ada
+            if ($nasabah->foto_ktp && \Storage::disk('public')->exists($nasabah->foto_ktp)) {
+                \Storage::disk('public')->delete($nasabah->foto_ktp);
+            }
+            $nasabah->foto_ktp = $request->file('foto_ktp')->store('foto_ktp', 'public');
         }
         $nasabah->save();
 

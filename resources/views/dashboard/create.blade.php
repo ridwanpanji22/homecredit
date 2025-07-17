@@ -2,7 +2,7 @@
 
 @section('content')
     <h2>Tambah Nasabah</h2>
-    <form method="POST" action="{{ route('admin.store') }}">
+    <form method="POST" action="{{ route('admin.store') }}" enctype="multipart/form-data">
         @csrf
         <div class="form-group">
             <label>Nama Nasabah</label>
@@ -23,6 +23,10 @@
         <div class="form-group">
             <label>Password</label>
             <input type="password" name="password" class="form-control" required>
+        </div>
+        <div class="form-group">
+            <label>Foto KTP</label>
+            <input type="file" name="foto_ktp" class="form-control" accept="image/*">
         </div>
         <button type="submit" class="btn btn-primary">Simpan</button>
         <a href="{{ route('admin.index') }}" class="btn btn-secondary">Kembali</a>

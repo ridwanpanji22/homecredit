@@ -22,6 +22,7 @@
                 <th>Email</th>
                 <th>No HP</th>
                 <th>No. KTP</th>
+                <th>Foto KTP</th>
                 <th>Status Kredit</th>
                 <th>Aksi</th>
             </tr>
@@ -34,6 +35,13 @@
                     <td>{{ $nasabah->email }}</td>
                     <td>{{ $nasabah->phone }}</td>
                     <td>{{ $nasabah->no_ktp ?? '-' }}</td>
+                    <td>
+                        @if($nasabah->foto_ktp)
+                            <img src="{{ asset('storage/' . $nasabah->foto_ktp) }}" alt="Foto KTP" width="60">
+                        @else
+                            -
+                        @endif
+                    </td>
                     <td></td> <!-- Status kredit, sementara kosong -->
                     <td>
                         <a href="{{ route('admin.edit', $nasabah->id) }}" class="btn btn-warning btn-sm">Edit</a>

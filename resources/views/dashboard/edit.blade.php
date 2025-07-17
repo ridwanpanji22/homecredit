@@ -2,7 +2,7 @@
 
 @section('content')
     <h2>Edit Nasabah</h2>
-    <form method="POST" action="{{ route('admin.update', $nasabah->id) }}">
+    <form method="POST" action="{{ route('admin.update', $nasabah->id) }}" enctype="multipart/form-data">
         @csrf
         @method('PUT')
         <div class="form-group">
@@ -24,6 +24,15 @@
         <div class="form-group">
             <label>Password (isi jika ingin mengubah)</label>
             <input type="password" name="password" class="form-control">
+        </div>
+        <div class="form-group">
+            <label>Foto KTP</label>
+            <input type="file" name="foto_ktp" class="form-control" accept="image/*">
+            @if($nasabah->foto_ktp)
+                <div class="mt-2">
+                    <img src="{{ asset('storage/' . $nasabah->foto_ktp) }}" alt="Foto KTP" width="120">
+                </div>
+            @endif
         </div>
         <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
         <a href="{{ route('admin.index') }}" class="btn btn-secondary">Batal</a>
