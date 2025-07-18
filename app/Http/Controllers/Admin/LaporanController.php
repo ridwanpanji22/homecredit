@@ -55,7 +55,21 @@ class LaporanController extends Controller
                 });
             })
             ->get();
-        return view('dashboard.laporan.pembayaran', compact('pembayarans','status','nasabahList','nasabahId'));
+
+        // Data ringkasan
+        $totalPembayaran = Pembayaran::where('status', 'terverifikasi')->sum('jumlah_pembayaran');
+        $totalPiutang = \App\Models\Kredit::sum('total_harga') - $totalPembayaran;
+        $kreditMenunggak = \App\Models\Kredit::with(['user', 'barang'])
+            ->where('status', 'aktif')
+            ->get()
+            ->filter(function ($kredit) {
+                return $kredit->isMenunggak();
+            });
+        $totalTunggakan = $kreditMenunggak->sum(function ($kredit) {
+            return $kredit->sisaTagihan();
+        });
+
+        return view('dashboard.laporan.pembayaran', compact('pembayarans','status','nasabahList','nasabahId', 'totalPembayaran', 'totalPiutang', 'totalTunggakan'));
     }
 
     public function nasabah(Request $request)
