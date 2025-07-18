@@ -37,7 +37,7 @@
                     <td>{{ $nasabah->no_ktp ?? '-' }}</td>
                     <td>
                         @if($nasabah->foto_ktp)
-                            <img src="{{ asset('storage/' . $nasabah->foto_ktp) }}" alt="Foto KTP" width="60">
+                            <img src="{{ asset('storage/' . $nasabah->foto_ktp) }}" alt="Foto KTP" width="60" style="cursor:pointer" data-bs-toggle="modal" data-bs-target="#ktpModal" data-img="{{ asset('storage/' . $nasabah->foto_ktp) }}">
                         @else
                             -
                         @endif
@@ -57,14 +57,37 @@
         </tbody>
     </table>
 
+<!-- Modal untuk Foto KTP -->
+<div class="modal fade" id="ktpModal" tabindex="-1" aria-labelledby="ktpModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xl modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="ktpModalLabel">Foto KTP</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body text-center">
+        <img src="" id="ktpModalImg" alt="Foto KTP" class="img-fluid w-100">
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- jQuery -->
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <!-- DataTables JS -->
 <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+<!-- Bootstrap JS (untuk modal) -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
 <script>
     $(document).ready(function() {
         $('#table').DataTable();
+        // Event untuk menampilkan gambar besar di modal
+        $('#ktpModal').on('show.bs.modal', function (event) {
+            var img = $(event.relatedTarget); // Gambar yang diklik
+            var src = img.data('img');
+            $('#ktpModalImg').attr('src', src);
+        });
     });
 </script>
 @endsection
