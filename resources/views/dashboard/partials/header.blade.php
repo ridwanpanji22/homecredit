@@ -1,6 +1,16 @@
-<header class="bg-success text-white text-center p-3">
-    <h1>Pengelolaan Riwayat Pembayaran Kredit</h1>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+<header class="bg-success text-white p-3">
+  <div class="container-fluid d-flex align-items-center position-relative" style="min-height:56px;">
+    <div class="d-flex align-items-center position-absolute start-0">
+      <img src="{{ asset('Gambar&Video/MoneyUp-removebg-preview.png') }}" alt="Logo" width="40" class="me-2">
+      <span class="fw-bold fs-4">Bunda Kami</span>
+    </div>
+    <div class="flex-grow-1 d-flex justify-content-center">
+      <h1 class="mb-0 fs-4 text-center">Pengelolaan Riwayat Pembayaran Kredit</h1>
+    </div>
+  </div>
+</header>
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container">
             @if(auth()->user()->role === 'admin')
                 <a class="navbar-brand" href="{{ route('admin.index') }}">Dashboard Admin</a>
@@ -67,7 +77,6 @@
             </div>
         </div>
     </nav>
-</header>
 
 <!-- Logout Modal -->
 <div class="modal fade" id="logoutModal" tabindex="-1" aria-labelledby="logoutModalLabel" aria-hidden="true">
