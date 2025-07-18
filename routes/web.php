@@ -20,7 +20,7 @@ Route::get('/', function () {
             return redirect()->route('nasabah.dashboard');
         }
     }
-    return redirect()->route('login');
+    return view('landingpage');
 });
 
 // Redirect authenticated users from login page to their dashboard
