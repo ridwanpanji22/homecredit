@@ -23,7 +23,6 @@
                 <th>No HP</th>
                 <th>No. KTP</th>
                 <th>Foto KTP</th>
-                <th>Status Kredit</th>
                 <th>Aksi</th>
             </tr>
         </thead>
@@ -42,7 +41,6 @@
                             -
                         @endif
                     </td>
-                    <td></td> <!-- Status kredit, sementara kosong -->
                     <td>
                         <a href="{{ route('admin.edit', $nasabah->id) }}" class="btn btn-warning btn-sm">Edit</a>
                         <form action="{{ route('admin.destroy', $nasabah->id) }}" method="POST" style="display:inline;">
