@@ -9,45 +9,42 @@
             <tr>
                 <th>No</th>
                 <th>Nama Nasabah</th>
-                <th>Barang</th>
+                <th>Nama Barang</th>
                 <th>Jumlah</th>
                 <th>Total Harga</th>
+                <th>Uang Muka</th>
                 <th>Jenis Kredit</th>
                 <th>Tenor</th>
-                <th>Cicilan</th>
-                <th>Tanggal Mulai</th>
                 <th>Status</th>
-                <th>Total Sudah Dibayar</th>
-                <th>Sisa</th>
                 <th>Aksi</th>
             </tr>
         </thead>
         <tbody>
-        @foreach($kredits as $kredit)
-            <tr>
-                <td>{{ $loop->iteration }}</td>
-                <td>{{ $kredit->user->name ?? '-' }}</td>
-                <td>{{ $kredit->barang->nama_barang ?? '-' }}</td>
-                <td>{{ $kredit->jumlah }}</td>
-                <td>Rp{{ number_format($kredit->total_harga, 0, ',', '.') }}</td>
-                <td>{{ ucfirst($kredit->jenis_kredit) }}</td>
-                <td>{{ $kredit->tenor }}</td>
-                <td>Rp{{ number_format($kredit->cicilan_per_periode, 0, ',', '.') }}</td>
-                {{-- <td>{{ $kredit->tanggal_mulai }}</td>  format tanggal indonesia--}}
-                <td>{{ \Carbon\Carbon::parse($kredit->tanggal_mulai)->format('d-m-Y') }}</td>
-                <td>{{ ucfirst($kredit->status) }}</td>
-                <td>Rp{{ number_format($kredit->totalDibayar(), 0, ',', '.') }}</td>
-                <td>Rp{{ number_format($kredit->sisaTagihan(), 0, ',', '.') }}</td>
-                <td>
-                    <a href="{{ route('kredit.pembayaran.index', $kredit->id) }}" class="btn btn-info btn-sm">Pembayaran</a>
-                    <a href="{{ route('kredit.edit', $kredit->id) }}" class="btn btn-warning btn-sm">Edit</a>
-                    <form action="{{ route('kredit.destroy', $kredit->id) }}" method="POST" style="display:inline;">
-                        @csrf @method('DELETE')
-                        <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Hapus kredit ini?')">Hapus</button>
-                    </form>
-                </td>
-            </tr>
-        @endforeach
+            @foreach($kredits as $kredit)
+                <tr>
+                    <td>{{ $loop->iteration }}</td>
+                    <td>{{ $kredit->user->name }}</td>
+                    <td>{{ $kredit->barang->nama_barang }}</td>
+                    <td>{{ $kredit->jumlah }}</td>
+                    <td>Rp{{ number_format($kredit->total_harga, 0, ',', '.') }}</td>
+                    <td>{{ $kredit->uang_muka }}%</td>
+                    <td>{{ ucfirst($kredit->jenis_kredit) }}</td>
+                    <td>{{ $kredit->tenor }}</td>
+                    <td>
+                        <span class="badge bg-{{ $kredit->status == 'aktif' ? 'success' : ($kredit->status == 'lunas' ? 'primary' : 'warning') }}">
+                            {{ ucfirst($kredit->status) }}
+                        </span>
+                    </td>
+                    <td>
+                        <a href="{{ route('kredit.edit', $kredit->id) }}" class="btn btn-warning btn-sm">Edit</a>
+                        <form action="{{ route('kredit.destroy', $kredit->id) }}" method="POST" style="display:inline;">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Yakin hapus?')">Hapus</button>
+                        </form>
+                    </td>
+                </tr>
+            @endforeach
         </tbody>
     </table>
 
