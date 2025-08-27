@@ -14,7 +14,7 @@
                 <th>Total Harga</th>
                 <th>Jenis Kredit</th>
                 <th>Tenor</th>
-                <th>Cicilan/Periode</th>
+                <th>Cicilan</th>
                 <th>Tanggal Mulai</th>
                 <th>Status</th>
                 <th>Total Sudah Dibayar</th>
