@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="container-fluid">
-    <h2 class="mb-4">Laporan Kredit</h2>
+    <h2 class="mb-4">Laporan Kredit Barang</h2>
 
     <!-- Filter -->
     <div class="card shadow mb-4">

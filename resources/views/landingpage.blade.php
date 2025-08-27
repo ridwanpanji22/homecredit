@@ -62,7 +62,7 @@
   <section class="py-5" id="fitur">
     <div class="container">
       <div class="text-center mb-4">
-        <h2 class="fw-bold"><b>Bayarnya dicicil ringan setiap bulan!</b></h2>
+        <h2 class="fw-bold"><b>Bayarnya dicicil ringan sesuai kemampuan!</b></h2>
       </div>
       <div class="row text-center">
         <div class="col-md-4 mb-4">
@@ -95,7 +95,7 @@
           </ul>
           <h4 class="fw-bold mt-4 text-danger">🎯 Gak perlu nunggu gajian!</h4>
           <p class="mb-2">Langsung aja ajukan kredit hari ini dan bawa pulang barangnya sekarang juga!</p>
-          <p class="mb-1">📍 Kunjungi kami di: <b>Jl. [alamat toko]</b></p>
+          <p class="mb-1">📍 Kunjungi kami di: <b>Jl. Ibunda 1 Gang Nusantara No. 39</b></p>
           <p>📞 Hubungi kami: <b>0813-4635-3319</b></p>
         </div>
         <div class="col-md-6 text-center">

@@ -32,7 +32,7 @@
                     <h2>Login</h2>
                     <div class="input-group">
                         <input type="text" id="login" name="login" value="{{ old('login') }}" required>
-                        <label for="login">Masuk Menggunakan Email Atau No. HP</label>
+                        <label for="login">Email</label>
                     </div>
                     <div class="input-group">
                         <input type="password" id="password" name="password" required>
