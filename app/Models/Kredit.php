@@ -6,7 +6,18 @@ use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
 class Kredit extends Model
 {
-    protected $guarded = ['id'];
+    protected $fillable = [
+        'user_id',
+        'barang_id',
+        'jumlah',
+        'total_harga',
+        'uang_muka',
+        'jenis_kredit',
+        'tenor',
+        'cicilan_per_periode',
+        'tanggal_mulai',
+        'status',
+    ];
 
     public function user() {
         return $this->belongsTo(User::class);
